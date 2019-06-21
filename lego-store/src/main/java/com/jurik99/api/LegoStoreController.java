@@ -1,5 +1,6 @@
 package com.jurik99.api;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +39,12 @@ public class LegoStoreController {
         return legoSetRepository.findAll();
     }
 
+    @GetMapping("/all-sorted")
+    public Collection<LegoSet> allSorted() {
+        final Sort sortByThemeAsc = Sort.by("theme").ascending();
+        return legoSetRepository.findAll(sortByThemeAsc);
+    }
+
     @PostMapping
     public void insert(@RequestBody final LegoSet legoSet) {
 //        mongoTemplate.insert(legoSet);
@@ -63,7 +70,8 @@ public class LegoStoreController {
 
     @GetMapping("/byTheme/{theme}")
     public Collection<LegoSet> byTheme(@PathVariable final String theme) {
-        return legoSetRepository.findAllByThemeContains(theme);
+        final Sort sortByThemeAsc = Sort.by("theme").ascending();
+        return legoSetRepository.findAllByThemeContains(theme, sortByThemeAsc);
     }
 
     @GetMapping("/hardThatStartWithM")
