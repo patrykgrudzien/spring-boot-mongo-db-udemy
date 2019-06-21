@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jurik99.model.LegoSet;
+import com.jurik99.model.LegoSetDifficulty;
 import com.jurik99.persistence.LegoSetRepository;
 
 import java.util.Collection;
@@ -63,5 +64,10 @@ public class LegoStoreController {
     @GetMapping("/byTheme/{theme}")
     public Collection<LegoSet> byTheme(@PathVariable final String theme) {
         return legoSetRepository.findAllByThemeContains(theme);
+    }
+
+    @GetMapping("/hardThatStartWithM")
+    public Collection<LegoSet> hardThatStartWithM() {
+        return legoSetRepository.findAllByDifficultyAndNameStartsWith(LegoSetDifficulty.HARD, "M");
     }
 }
