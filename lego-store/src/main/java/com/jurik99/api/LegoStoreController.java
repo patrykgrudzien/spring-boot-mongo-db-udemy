@@ -70,4 +70,9 @@ public class LegoStoreController {
     public Collection<LegoSet> hardThatStartWithM() {
         return legoSetRepository.findAllByDifficultyAndNameStartsWith(LegoSetDifficulty.HARD, "M");
     }
+
+    @GetMapping("/byDeliveryFeeLessThan/{price}")
+    Collection<LegoSet> byDeliveryFeeLessThan(@PathVariable final int price) {
+        return legoSetRepository.findAllByDeliveryPriceLessThan(price);
+    }
 }
