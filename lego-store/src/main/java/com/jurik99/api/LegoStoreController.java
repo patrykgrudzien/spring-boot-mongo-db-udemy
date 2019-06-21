@@ -2,6 +2,7 @@ package com.jurik99.api;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jurik99.model.LegoSet;
 import com.jurik99.model.LegoSetDifficulty;
+import com.jurik99.model.QLegoSet;
 import com.jurik99.persistence.LegoSetRepository;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -80,12 +84,30 @@ public class LegoStoreController {
     }
 
     @GetMapping("/byDeliveryFeeLessThan/{price}")
-    Collection<LegoSet> byDeliveryFeeLessThan(@PathVariable final int price) {
+    public Collection<LegoSet> byDeliveryFeeLessThan(@PathVariable final int price) {
         return legoSetRepository.findAllByDeliveryPriceLessThan(price);
     }
 
     @GetMapping("/greatReviews")
-    Collection<LegoSet> byGreatReviews() {
+    public Collection<LegoSet> byGreatReviews() {
         return legoSetRepository.findAllByGreatReviews();
+    }
+
+    @SuppressWarnings("DanglingJavadoc")
+    @GetMapping("/best-buys")
+    public Collection<LegoSet> bestBuys() {
+        // Query DSL cannot be accessed directly from LegoSetRepository
+        final QLegoSet query = new QLegoSet("query"); // parameter "name" doesn't matter here and I can put anything
+        final BooleanExpression inStockFilter = query.deliveryInfo.inStock.isTrue();
+        final BooleanExpression smallDeliveryFeeFilter = query.deliveryInfo.deliveryFee.lt(50);
+        final BooleanExpression hasGreatReviewsFilter = query.reviews.any().rating.eq(10);
+
+        final BooleanExpression bestBuysFilter = inStockFilter.and(smallDeliveryFeeFilter)
+                                                              .and(hasGreatReviewsFilter);
+        /**
+         * Thanks to {@link QuerydslPredicateExecutor} that {@link LegoSetRepository} extends,
+         * I can now use another overloaded method: {@link LegoSetRepository#findAll(Predicate)}
+         */
+        return (Collection<LegoSet>) legoSetRepository.findAll(bestBuysFilter);
     }
 }
