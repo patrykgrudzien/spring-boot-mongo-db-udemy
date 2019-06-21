@@ -1,8 +1,10 @@
 package com.jurik99.persistence;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
+import com.jurik99.MongoConstants;
 import com.jurik99.model.DeliveryInfo;
 import com.jurik99.model.LegoSet;
 import com.jurik99.model.LegoSetDifficulty;
@@ -14,8 +16,15 @@ import java.util.Arrays;
 @Service
 public class DbSeeder implements CommandLineRunner {
 
-	@Override
+    private final MongoTemplate mongoTemplate;
+
+    public DbSeeder(final MongoTemplate mongoTemplate) {
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
 	public void run(final String... args) {
+        mongoTemplate.dropCollection(MongoConstants.LEGO_SETS_COLLECTION_NAME);
 
 		final LegoSet millenniumFalcon = new LegoSet(
 				"Millennium Falcon",
@@ -62,5 +71,7 @@ public class DbSeeder implements CommandLineRunner {
 						new ProductReview("James", 10)
 				)
 		);
+
+		mongoTemplate.insertAll(Arrays.asList(millenniumFalcon, skyPolice, mcLarenSenna, mindstormEve));
 	}
 }

@@ -12,13 +12,15 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.jurik99.MongoConstants;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
 @Data
 @Setter(value = AccessLevel.NONE)
-@Document(collection = "legosets")
+@Document(collection = MongoConstants.LEGO_SETS_COLLECTION_NAME)
 public class LegoSet {
 
 	@Id
