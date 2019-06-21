@@ -14,6 +14,7 @@ import com.jurik99.model.LegoSet;
 import com.jurik99.persistence.LegoSetRepository;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/legostore/api")
@@ -52,5 +53,10 @@ public class LegoStoreController {
     public void delete(@PathVariable final String id) {
 //        mongoTemplate.remove(new Query(Criteria.where("id").is(id)), LegoSet.class);
         legoSetRepository.deleteById(id);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<LegoSet> findById(@PathVariable("id") final String id) {
+        return legoSetRepository.findById(id);
     }
 }
