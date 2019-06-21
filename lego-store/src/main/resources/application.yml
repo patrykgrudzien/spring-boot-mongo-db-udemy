@@ -4,6 +4,10 @@ server:
 spring:
   data:
     mongodb:
-      host: 172.26.129.169 # from VirtualBox
+      # host: 172.26.129.169 # from VirtualBox
+      host: localhost
       port: 27017
       database: legostore # can by whatever
+      username: root
+      password: example
+      authentication-database: admin
