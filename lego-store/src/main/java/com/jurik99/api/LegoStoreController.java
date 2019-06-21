@@ -1,8 +1,6 @@
 package com.jurik99.api;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jurik99.model.LegoSet;
+import com.jurik99.persistence.LegoSetRepository;
 
 import java.util.Collection;
 
@@ -20,29 +19,38 @@ import java.util.Collection;
 @RequestMapping("/legostore/api")
 public class LegoStoreController {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final MongoTemplate mongoTemplate;
 
-    public LegoStoreController(final MongoTemplate mongoTemplate) {
+    private final LegoSetRepository legoSetRepository;
+
+    public LegoStoreController(final MongoTemplate mongoTemplate,
+                               final LegoSetRepository legoSetRepository) {
         this.mongoTemplate = mongoTemplate;
+        this.legoSetRepository = legoSetRepository;
     }
 
     @GetMapping("/all")
     public Collection<LegoSet> all() {
-        return mongoTemplate.findAll(LegoSet.class);
+//        return mongoTemplate.findAll(LegoSet.class);
+        return legoSetRepository.findAll();
     }
 
     @PostMapping
     public void insert(@RequestBody final LegoSet legoSet) {
-        mongoTemplate.insert(legoSet);
+//        mongoTemplate.insert(legoSet);
+        legoSetRepository.insert(legoSet);
     }
 
     @PutMapping
     public void update(@RequestBody final LegoSet legoSet) {
-        mongoTemplate.save(legoSet);
+//        mongoTemplate.save(legoSet);
+        legoSetRepository.save(legoSet);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable final String id) {
-        mongoTemplate.remove(new Query(Criteria.where("id").is(id)), LegoSet.class);
+//        mongoTemplate.remove(new Query(Criteria.where("id").is(id)), LegoSet.class);
+        legoSetRepository.deleteById(id);
     }
 }
