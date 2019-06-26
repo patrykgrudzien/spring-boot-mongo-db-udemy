@@ -22,15 +22,15 @@ public class ReportService {
 
     public List<AvgRatingModel> getAvgRatingReport() {
         // building projection operation
-        final ProjectionOperation projectToMatchModel =
-                Aggregation.project()
+        final ProjectionOperation projection =
+                Aggregation.project() // creating projection
                            .andExpression("$name").as("productName")
                            .andExpression("{$avg : '$reviews.rating'}").as("avgRating");
         // aggregation
-//        final Aggregation avgRatingAggregation = Aggregation.newAggregation(LegoSet.class, projectToMatchModel);
-        final TypedAggregation<LegoSet> avgRatingAggregation = Aggregation.newAggregation(LegoSet.class, projectToMatchModel);
+//        final Aggregation aggregation = Aggregation.newAggregation(LegoSet.class, projection);
+        final TypedAggregation<LegoSet> aggregation = Aggregation.newAggregation(LegoSet.class, projection);
 
-        return mongoTemplate.aggregate(avgRatingAggregation, LegoSet.class, AvgRatingModel.class)
+        return mongoTemplate.aggregate(aggregation, LegoSet.class, AvgRatingModel.class)
                             .getMappedResults();
     }
 }

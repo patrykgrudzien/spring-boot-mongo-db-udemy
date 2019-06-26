@@ -77,6 +77,10 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/generated-sources/java</outputDirectory>
+                            <!--
+                                Thanks to that processor, QueryDSL knows how to scan for the classes annotated
+                                with the @Document annotation
+                            -->
                             <processor>
                                 org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor
                             </processor>
