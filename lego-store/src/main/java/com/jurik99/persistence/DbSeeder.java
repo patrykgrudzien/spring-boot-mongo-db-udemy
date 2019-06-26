@@ -4,7 +4,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
-import com.jurik99.MongoConstants;
 import com.jurik99.model.DeliveryInfo;
 import com.jurik99.model.LegoSet;
 import com.jurik99.model.LegoSetDifficulty;
@@ -12,19 +11,25 @@ import com.jurik99.model.ProductReview;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class DbSeeder implements CommandLineRunner {
 
+    @SuppressWarnings("FieldCanBeLocal")
     private final MongoTemplate mongoTemplate;
+    private final LegoSetRepository legoSetRepository;
 
-    public DbSeeder(final MongoTemplate mongoTemplate) {
+    public DbSeeder(final MongoTemplate mongoTemplate,
+                    final LegoSetRepository legoSetRepository) {
         this.mongoTemplate = mongoTemplate;
+        this.legoSetRepository = legoSetRepository;
     }
 
     @Override
 	public void run(final String... args) {
-        mongoTemplate.dropCollection(MongoConstants.LEGO_SETS_COLLECTION_NAME);
+//        mongoTemplate.dropCollection(MongoConstants.LEGO_SETS_COLLECTION_NAME);
+        legoSetRepository.deleteAll();
 
 		final LegoSet millenniumFalcon = new LegoSet(
 				"Millennium Falcon",
@@ -72,6 +77,8 @@ public class DbSeeder implements CommandLineRunner {
 				)
 		);
 
-		mongoTemplate.insertAll(Arrays.asList(millenniumFalcon, skyPolice, mcLarenSenna, mindstormEve));
+        final List<LegoSet> objectsToSave = Arrays.asList(millenniumFalcon, skyPolice, mcLarenSenna, mindstormEve);
+//        mongoTemplate.insertAll(objectsToSave);
+        legoSetRepository.insert(objectsToSave);
 	}
 }

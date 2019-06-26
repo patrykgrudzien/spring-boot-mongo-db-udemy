@@ -1,6 +1,7 @@
 package com.jurik99.persistence;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -21,6 +22,8 @@ public interface LegoSetRepository extends MongoRepository<LegoSet, String>, Que
     Collection<LegoSet> findAllByThemeContains(String theme, Sort sort);
 
     Collection<LegoSet> findAllByThemeIsNot(String theme);
+
+    Collection<LegoSet> findAllBy(TextCriteria textCriteria);
 
     /*
      * Raw query from Mongo:

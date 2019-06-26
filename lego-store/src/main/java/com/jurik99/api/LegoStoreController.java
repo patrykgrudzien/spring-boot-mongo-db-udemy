@@ -2,6 +2,7 @@ package com.jurik99.api;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -109,5 +110,13 @@ public class LegoStoreController {
          * I can now use another overloaded method: {@link LegoSetRepository#findAll(Predicate)}
          */
         return (Collection<LegoSet>) legoSetRepository.findAll(bestBuysFilter);
+    }
+
+    @GetMapping("fullTextSearch/{text}")
+    public Collection<LegoSet> fullTextSearch(@PathVariable final String text) {
+        // we want to trigger full text search on 3 fields (name, theme, userName)
+        // I need to wrap a text into Text Criteria Object
+        final TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(text);
+        return legoSetRepository.findAllBy(textCriteria);
     }
 }
