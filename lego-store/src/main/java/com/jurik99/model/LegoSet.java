@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -53,7 +52,7 @@ public class LegoSet {
 	@Field(value = "delivery")
 	private DeliveryInfo deliveryInfo;
 
-	@Transient
+//	@Transient
 	private int nbParts;
 
 	@PersistenceConstructor // used to point mongodb which constructor to use (if multiple) for serialization/deserialization

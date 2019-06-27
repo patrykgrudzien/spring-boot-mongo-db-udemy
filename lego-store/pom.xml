@@ -56,6 +56,13 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
         </dependency>
+
+        <!-- MongoBee -->
+        <dependency>
+            <groupId>com.github.mongobee</groupId>
+            <artifactId>mongobee</artifactId>
+            <version>0.13</version>
+        </dependency>
     </dependencies>
 
     <build>

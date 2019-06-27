@@ -2,7 +2,6 @@ package com.jurik99.persistence;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.stereotype.Service;
 
 import com.jurik99.model.DeliveryInfo;
 import com.jurik99.model.LegoSet;
@@ -13,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-@Service
+//@Service
 public class DbSeeder implements CommandLineRunner {
 
     @SuppressWarnings("FieldCanBeLocal")
