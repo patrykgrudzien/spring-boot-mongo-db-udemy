@@ -25,3 +25,9 @@ hs_err_pid*
 # Custom volumes for docker
 configdb-backup-docker-volume
 db-backup-docker-volume
+
+# Maven temp files
+*mvn*
+
+# IntelliJ temp files
+*.idea
