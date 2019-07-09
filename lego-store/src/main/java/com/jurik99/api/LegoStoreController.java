@@ -119,4 +119,9 @@ public class LegoStoreController {
         final TextCriteria textCriteria = TextCriteria.forDefaultLanguage().matching(text);
         return legoSetRepository.findAllBy(textCriteria);
     }
+
+    @GetMapping("/byPaymentOption/{id}")
+    public Collection<LegoSet> byPaymentOption(@PathVariable final String id) {
+	    return legoSetRepository.findByPaymentOptionId(id);
+    }
 }
