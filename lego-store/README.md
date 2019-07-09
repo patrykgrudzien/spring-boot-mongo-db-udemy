@@ -1,4 +1,4 @@
-#### Full text search
+#### Section 7 - Full text search
 All we have to do is - use the `@TextIndexed` annotation.
 
 * It can be used on root level properties.
@@ -8,3 +8,20 @@ All we have to do is - use the `@TextIndexed` annotation.
 
 (I need to specify what properties need to be included while doing a
 full text search).
+
+#### Section 8 - Data Migrations (changing the data structure)
+1. Adding new collection is very easy (it's inserted automatically by `MongoRepository`)
+    1. Simply put `@Document` annotation on a new collection class e.g. `Customer.java`
+2. Adding new field to the existing collection
+    1. Delete annotation `@Transient` from `LegoSet#nbParts`
+3. Removing fields
+4. Trying to modify the field name
+    1. `LegoSet#deliveryInfo` (it's also possible when creating new document and `MongoRepository` handles that)
+    2. Problem starts appearing when we want to `getAll()` documents:
+        1. All existing documents that had previous `name` of that field, will have `null` value for it as 
+        they were set previously with `old` name
+        
+**Changing a property name is the `MOST DIFFICULT` scenario during updating the data structure!**
+
+To make it work everywhere, we need to create mongo script and update all possible places.
+Or use `MongoBee` which is the `data migrations` library.
