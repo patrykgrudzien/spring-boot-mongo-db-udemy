@@ -2,17 +2,23 @@ package com.jurik99.persistence;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.stereotype.Service;
 
 import com.jurik99.model.DeliveryInfo;
 import com.jurik99.model.LegoSet;
 import com.jurik99.model.LegoSetDifficulty;
+import com.jurik99.model.PaymentOption;
 import com.jurik99.model.ProductReview;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-//@Service
+import static com.jurik99.model.PaymentType.CASH;
+import static com.jurik99.model.PaymentType.CREDIT_CARD;
+import static com.jurik99.model.PaymentType.PAY_PAL;
+
+@Service
 public class DbSeeder implements CommandLineRunner {
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -30,6 +36,14 @@ public class DbSeeder implements CommandLineRunner {
 //        mongoTemplate.dropCollection(MongoConstants.LEGO_SETS_COLLECTION_NAME);
         legoSetRepository.deleteAll();
 
+        final PaymentOption creditCardPayment = new PaymentOption(CREDIT_CARD, 0);
+        final PaymentOption payPalPayment = new PaymentOption(PAY_PAL, 1);
+        final PaymentOption cashPayment = new PaymentOption(CASH, 10);
+
+        mongoTemplate.insert(creditCardPayment);
+        mongoTemplate.insert(payPalPayment);
+        mongoTemplate.insert(cashPayment);
+
 		final LegoSet millenniumFalcon = new LegoSet(
 				"Millennium Falcon",
 				"Star Wars",
@@ -39,7 +53,8 @@ public class DbSeeder implements CommandLineRunner {
 						new ProductReview("Dan", 7),
 						new ProductReview("Anna", 10),
 						new ProductReview("John", 8)
-				)
+				),
+				creditCardPayment
 		);
 
 		final LegoSet skyPolice = new LegoSet(
@@ -50,7 +65,8 @@ public class DbSeeder implements CommandLineRunner {
 				Arrays.asList(
 						new ProductReview("Dan", 5),
 						new ProductReview("Andrew", 8)
-				)
+				),
+				creditCardPayment
 		);
 
 		final LegoSet mcLarenSenna = new LegoSet(
@@ -61,7 +77,8 @@ public class DbSeeder implements CommandLineRunner {
 				Arrays.asList(
 						new ProductReview("Bogdan", 9),
 						new ProductReview("Christa", 9)
-				)
+				),
+				payPalPayment
 		);
 
 		final LegoSet mindstormEve = new LegoSet(
@@ -73,7 +90,8 @@ public class DbSeeder implements CommandLineRunner {
 						new ProductReview("Cosmin", 10),
 						new ProductReview("Jane", 9),
 						new ProductReview("James", 10)
-				)
+				),
+				cashPayment
 		);
 
         final List<LegoSet> objectsToSave = Arrays.asList(millenniumFalcon, skyPolice, mcLarenSenna, mindstormEve);

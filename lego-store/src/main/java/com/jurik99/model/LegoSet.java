@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.IndexDirection;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -52,12 +53,16 @@ public class LegoSet {
 	@Field(value = "delivery")
 	private DeliveryInfo deliveryInfo;
 
+	@DBRef
+	private PaymentOption paymentOption;
+
 //	@Transient
 	private int nbParts;
 
 	@PersistenceConstructor // used to point mongodb which constructor to use (if multiple) for serialization/deserialization
 	public LegoSet(final String name, final String theme, final LegoSetDifficulty difficulty,
-	               final DeliveryInfo deliveryInfo, final Collection<ProductReview> reviews) {
+	               final DeliveryInfo deliveryInfo, final Collection<ProductReview> reviews,
+	               final PaymentOption paymentOption) {
 		this.name = name;
 		this.theme = theme;
 		this.difficulty = difficulty;
@@ -65,6 +70,7 @@ public class LegoSet {
 		if (reviews != null) {
 			this.reviews = reviews;
 		}
+		this.paymentOption = paymentOption;
 	}
 
 	public Collection<ProductReview> getReviews() {

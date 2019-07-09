@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import com.jurik99.model.DeliveryInfo;
 import com.jurik99.model.LegoSet;
 import com.jurik99.model.LegoSetDifficulty;
+import com.jurik99.model.PaymentOption;
 import com.jurik99.model.ProductReview;
 import com.jurik99.persistence.LegoSetRepository;
 
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.jurik99.model.PaymentType.CREDIT_CARD;
+import static com.jurik99.model.PaymentType.PAY_PAL;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -47,7 +50,8 @@ public class LegoStoreDatabaseTests {
 						new ProductReview("Dan", 7),
 						new ProductReview("Anna", 10),
 						new ProductReview("John", 8)
-				)
+				),
+				new PaymentOption(CREDIT_CARD, 0)
 		);
 
 		final LegoSet skyPolice = new LegoSet(
@@ -58,7 +62,8 @@ public class LegoStoreDatabaseTests {
 				Arrays.asList(
 						new ProductReview("Dan", 5),
 						new ProductReview("Andrew", 8)
-				)
+				),
+				new PaymentOption(PAY_PAL, 7)
 		);
 
 		legoSetRepository.insert(millenniumFalcon);

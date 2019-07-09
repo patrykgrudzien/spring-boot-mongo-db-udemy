@@ -25,3 +25,13 @@ full text search).
 
 To make it work everywhere, we need to create mongo script and update all possible places.
 Or use `MongoBee` which is the `data migrations` library.
+
+#### Section 9 - Document References
+* Relationships between documents in MongoDB are called `References`.
+* They allow us to link documents that are spread across multiple collections.
+* To avoid making too many references we can create `Embedded Documents`.
+* We can also use `Referenced Documents`.
+* **We don't have cascading by default !**
+
+**THE NATURE OF `NoSQL` IS TO MINIMIZE RELATIONSHIPS BETWEEN COLLECTIONS!**
+**Use `@DBRef` only when really needed.**
